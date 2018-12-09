@@ -1,0 +1,65 @@
+date,specific_region,general_region,trigger,depth_ft,width_ft,url,lat,lon,elevation_ft,slope_angle_deg,vertical_ft,aspect
+4/29/2017,Avalanche: Superior,Salt Lake,Skier,2.0,150,https://utahavalanchecenter.org/avalanche/32961,40.59407613873,-111.65495394384,10000,40,-999,South
+4/28/2017,Avalanche: Flagstaff Ridge,Salt Lake,Skier,0.08,-999,https://utahavalanchecenter.org/avalanche/32950,40.599312572213,-111.64109362874,9800,34,-999,North
+4/28/2017,Avalanche: Little Superior,Salt Lake,Skier,1.0,60,https://utahavalanchecenter.org/avalanche/32951,40.592023872556,-111.65991066608,10000,-999,Unknown,Southeast
+4/27/2017,Avalanche: Flagstaff Ridge,Salt Lake,Skier,0.67,60,https://utahavalanchecenter.org/avalanche/32924,40.594665762171,-111.64143561039,9300,33,70,Southeast
+4/27/2017,Avalanche: Cardiff Bowl,Salt Lake,Skier,0.67,30,https://utahavalanchecenter.org/avalanche/32926,40.595152019388,-111.65229319249,10200,36,300,Southeast
+4/27/2017,Avalanche: Honeycomb,Salt Lake,Skier,0.83,30,https://utahavalanchecenter.org/avalanche/32931,40.606733347719,-111.60644496487,9700,35,300,Northwest
+4/25/2017,Avalanche: Stupid Chute,Salt Lake,Skier,1.0,300,https://utahavalanchecenter.org/avalanche/32888,40.588563404853,-111.60139559423,10200,42,400,Northwest
+4/11/2017,Avalanche: Snowbird Ski Resort,Salt Lake,Hiker,0.83,100,https://utahavalanchecenter.org/avalanche/32584,40.558715504713,-111.66535662302,10100,38,200,Northeast
+4/10/2017,Avalanche: Mineral Basin,Salt Lake,Natural,0.58,100,https://utahavalanchecenter.org/avalanche/32555,40.556561654872,-111.62895093325,9500,Unknown,250,Southeast
+3/28/2017,Avalanche: No Name Baldy,Salt Lake,Skier,1.0,100,https://utahavalanchecenter.org/avalanche/32041,40.524845329544,-111.71433402813,10300,35,70,Northeast
+3/28/2017,Avalanche: Claytons,Salt Lake,Skier,0.67,70,https://utahavalanchecenter.org/avalanche/32046,40.591894792302,-111.5604543558,10500,Unknown,300,East
+3/24/2017,Avalanche: Lake Peak,Salt Lake,Skier,0.5,100,https://utahavalanchecenter.org/avalanche/31908,40.542251339125,-111.68403981837,10600,45,600,Northeast
+3/8/2017,Avalanche: Cardiac Bowl,Salt Lake,Skier,1.33,250,https://utahavalanchecenter.org/avalanche/31356,40.593881671426,-111.66311858806,10200,40,350,Northeast
+3/4/2017,Avalanche: Hogum,Salt Lake,Skier,-999.0,-999,https://utahavalanchecenter.org/avalanche/31228,40.545226783484,-111.72729848537,10000,40,600,East
+3/3/2017,Avalanche: Y-Not Couloir,Salt Lake,Natural,-999.0,-999,https://utahavalanchecenter.org/avalanche/31179,40.562199205596,-111.74331663759,Unknown,Unknown,Unknown,Northeast
+2/24/2017,Avalanche: Hogum,Salt Lake,Natural,3.0,150,https://utahavalanchecenter.org/avalanche/31015,40.54925412994,-111.72514198934,10200,40,500,East
+2/22/2017,Avalanche: Mary Lake Ridge,Salt Lake,Snowboarder,3.0,150,https://utahavalanchecenter.org/avalanche/30866,40.593576218412,-111.58944696206,9300,45,250,North
+2/22/2017,Avalanche: Back Bowls,Salt Lake,Natural,-999.0,175,https://utahavalanchecenter.org/avalanche/30864,40.588861670356,-111.60172614735,10300,Unknown,250,North
+2/19/2017,Avalanche: Lake Peak,Salt Lake,Skier,0.83,45,https://utahavalanchecenter.org/avalanche/30778,40.541597683682,-111.6830634943,10400,36,250,East
+2/19/2017,Avalanche: Sunset Peak,Salt Lake,Skier,1.0,200,https://utahavalanchecenter.org/avalanche/30785,40.577255933713,-111.59425287158,10500,38,600,North
+2/19/2017,Avalanche: Cardiff Bowl,Salt Lake,Skier,0.33,80,https://utahavalanchecenter.org/avalanche/30737,40.595037711071,-111.64668201124,9600,34,150,Northeast
+2/19/2017,Avalanche: LSB North,Salt Lake,Snowboarder,0.67,60,https://utahavalanchecenter.org/avalanche/30745,40.595592448263,-111.66169165286,10000,-999,100,Northeast
+2/19/2017,Avalanche: Maybird Gulch,Salt Lake,Skier,0.67,40,https://utahavalanchecenter.org/avalanche/30748,40.553391792743,-111.70734955585,-999,40,40,North
+2/18/2017,Avalanche: White Pine,Salt Lake,Skier,0.33,10,https://utahavalanchecenter.org/avalanche/30712,40.555742519405,-111.69018744144,9400,38,100,Northeast
+2/17/2017,Avalanche: Y-Not Couloir,Salt Lake,Natural,-999.0,-999,https://utahavalanchecenter.org/avalanche/30685,40.563731265331,-111.72897218381,8500,-999,-999,North
+2/16/2017,Avalanche: White Pine,Salt Lake,Skier,0.25,50,https://utahavalanchecenter.org/avalanche/30646,40.545520792046,-111.66673420582,10000,30,40,North
+2/16/2017,Avalanche: Mill B South,Salt Lake,Skier,0.92,60,https://utahavalanchecenter.org/avalanche/30648,40.595796113816,-111.69725774441,9500,35,100,North
+2/16/2017,Avalanche: Red Pine Gulch,Salt Lake,Skier,0.83,60,https://utahavalanchecenter.org/avalanche/30651,40.545047422342,-111.69441460285,9600,36,70,North
+2/13/2017,Avalanche: Salt Lake,Salt Lake,Skier,0.67,30,https://utahavalanchecenter.org/avalanche/30583,40.568494535841,-111.6738537983,9300,40,500,Northwest
+2/12/2017,Avalanche: Hogum,Salt Lake,Skier,0.67,40,https://utahavalanchecenter.org/avalanche/30514,40.546445101719,-111.71040056861,10500,38,450,East
+2/11/2017,Avalanche: Upper Red Pine,Salt Lake,Natural,3.0,500,https://utahavalanchecenter.org/avalanche/30517,40.536940306594,-111.69593809758,10500,38,1000,Northeast
+2/11/2017,Avalanche: White Pine,Salt Lake,Unknown,0.17,1,https://utahavalanchecenter.org/avalanche/30535,40.54003277507,-111.6826283059,10200,Unknown,250,East
+2/11/2017,Avalanche: Tuscarora,Salt Lake,Skier,1.67,200,https://utahavalanchecenter.org/avalanche/30541,40.583967208727,-111.59856318149,10500,39,450,Northeast
+2/11/2017,Avalanche: White Pine,Salt Lake,Natural,2.5,700,https://utahavalanchecenter.org/avalanche/30578,40.539949696328,-111.68289183294,10300,38,300,Northeast
+2/8/2017,Avalanche: Patsy Marly,Salt Lake,Skier,-999.0,-999,https://utahavalanchecenter.org/avalanche/30378,40.592316911813,-111.61628721868,9600,-999,-999,North
+2/7/2017,Avalanche: Wolverine Cirque,Salt Lake,Natural,-999.0,250,https://utahavalanchecenter.org/avalanche/30389,40.586776872426,-111.60686266393,10500,Unknown,500,Northeast
+1/29/2017,Avalanche: White Pine,Salt Lake,Natural,-999.0,50,https://utahavalanchecenter.org/avalanche/30104,40.542178088303,-111.68138979585,10100,45,Unknown,Southeast
+1/27/2017,Avalanche: Mary Ellen,Salt Lake,Skier,1.0,80,https://utahavalanchecenter.org/avalanche/30045,40.545700151922,-111.6511344782,10700,40,200,East
+1/27/2017,Avalanche: Little Superior,Salt Lake,Unknown,1.5,45,https://utahavalanchecenter.org/avalanche/30023,40.593310842521,-111.66012524282,10300,36,1250,Southeast
+1/24/2017,Avalanche: Red Pine Gulch,Salt Lake,Unknown,3.0,200,https://utahavalanchecenter.org/avalanche/30147,40.53952591884,-111.69322121612,10300,Unknown,600,Northeast
+1/22/2017,Avalanche: Rocky Point,Salt Lake,Skier,2.0,60,https://utahavalanchecenter.org/avalanche/29855,40.578102595724,-111.59712551747,10400,36,200,Northeast
+1/21/2017,Avalanche: Figure 8 Hill,Salt Lake,Natural,1.0,70,https://utahavalanchecenter.org/avalanche/29836,40.592521351122,-111.60509704267,9600,37,-999,Northeast
+1/16/2017,Avalanche: Little Pine,Salt Lake,Natural,-999.0,-999,https://utahavalanchecenter.org/avalanche/29685,40.584237112365,-111.68701170597,Unknown,Unknown,Unknown,South
+1/16/2017,Avalanche: Hogum,Salt Lake,Skier,0.58,60,https://utahavalanchecenter.org/avalanche/29700,40.540522534672,-111.74234567795,11100,38,200,South
+1/15/2017,Avalanche: Wolverine Cirque,Salt Lake,Skier,0.5,15,https://utahavalanchecenter.org/avalanche/29653,40.58526120853,-111.60682438526,10600,50,250,North
+1/15/2017,Avalanche: Red Pine Gulch,Salt Lake,Skier,1.17,30,https://utahavalanchecenter.org/avalanche/29660,40.535069192715,-111.6942214838,10600,40,150,North
+1/10/2017,Avalanche: Pink Pine,Salt Lake,Skier,1.25,80,https://utahavalanchecenter.org/avalanche/29489,40.55889808989,-111.69280527744,9200,40,300,Northeast
+1/10/2017,Avalanche: 10420,Salt Lake,Skier,1.0,150,https://utahavalanchecenter.org/avalanche/29490,40.604015028534,-111.56792162571,9600,Unknown,Unknown,North
+1/9/2017,Avalanche: Y Coulior,Salt Lake,Natural,-999.0,-999,https://utahavalanchecenter.org/avalanche/29448,40.565012157518,-111.72574280415,Unknown,-999,-999,North
+1/8/2017,Avalanche: Mineral Basin,Salt Lake,Natural,0.67,100,https://utahavalanchecenter.org/avalanche/29428,40.550436709336,-111.63432239209,9800,Unknown,250,North
+1/4/2017,Avalanche: Cardiac Ridge,Salt Lake,Natural,-999.0,-999,https://utahavalanchecenter.org/avalanche/29321,40.598445762004,-111.66524960313,10000,Unknown,-999,Northeast
+12/24/2016,Avalanche: Cardiff Bowl,Salt Lake,Snowboarder,2.0,30,https://utahavalanchecenter.org/avalanche/29004,40.594809857611,-111.6523575655,10200,32,200,East
+12/19/2016,Avalanche: White Pine,Salt Lake,Snowboarder,-999.0,700,https://utahavalanchecenter.org/avalanche/28902,40.552112760962,-111.66533945712,11000,38,1000,North
+12/17/2016,Avalanche: Pioneer Peak,Salt Lake,Natural,2.0,300,https://utahavalanchecenter.org/avalanche/28880,40.581250287856,-111.58871410999,10000,-999,500,Northwest
+12/16/2016,Avalanche: White Pine,Salt Lake,Natural,-999.0,150,https://utahavalanchecenter.org/avalanche/28925,40.550835907962,-111.68827770862,9800,38,700,Northeast
+12/15/2016,Avalanche: Flagstaff Ridge,Salt Lake,Skier,1.67,70,https://utahavalanchecenter.org/avalanche/28754,40.594777270683,-111.6408991686,9400,39,100,Southeast
+12/14/2016,Avalanche: Grizzly Gulch,Salt Lake,Natural,0.5,200,https://utahavalanchecenter.org/avalanche/28722,40.59294066616,-111.61800383245,9800,38,150,North
+12/14/2016,Avalanche: Cardiff Fork,Salt Lake,Skier,0.5,175,https://utahavalanchecenter.org/avalanche/28728,40.595852885477,-111.65466426526,9900,36,150,Northeast
+12/14/2016,Avalanche: Days Fork,Salt Lake,Skier,0.5,60,https://utahavalanchecenter.org/avalanche/28729,40.600314070662,-111.64332388554,10300,36,Unknown,Northeast
+12/13/2016,Avalanche: Pink Pine,Salt Lake,Snowboarder,0.67,30,https://utahavalanchecenter.org/avalanche/28700,40.556073163327,-111.69033764515,9400,40,200,Northeast
+12/13/2016,Avalanche: Hide A Way Park,Salt Lake,Skier,1.17,25,https://utahavalanchecenter.org/avalanche/28702,40.603266137495,-111.63285254155,10000,38,400,North
+12/10/2016,Avalanche: Twin Lakes area,Salt Lake,Skier,0.33,100,https://utahavalanchecenter.org/avalanche/28607,40.596701577877,-111.59987478169,-999,-999,50,Northeast
+11/30/2016,Avalanche: East Bowl,Salt Lake,Skier,2.0,45,https://utahavalanchecenter.org/avalanche/28362,40.600290218177,-111.62072694514,9900,43,250,North
+11/22/2016,Avalanche: Baldy,Salt Lake,Skier,0.67,150,https://utahavalanchecenter.org/avalanche/28165,40.569098578428,-111.63894792888,11000,40,1250,North

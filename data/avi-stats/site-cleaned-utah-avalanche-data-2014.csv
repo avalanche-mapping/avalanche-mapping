@@ -1,0 +1,97 @@
+date,specific_region,general_region,trigger,depth_ft,width_ft,url,lat,lon,elevation_ft,slope_angle_deg,vertical_ft,aspect
+4/29/2014,Avalanche: Red Pine Gulch,Salt Lake,Skier,0.67,175,https://utahavalanchecenter.org/avalanche/21559,40.533216,-111.690123,10400,38,Unknown,Northeast
+4/28/2014,Avalanche: West Bowl,Salt Lake,Unknown,1.5,50,https://utahavalanchecenter.org/avalanche/21545,40.602295,-111.631587,10000,39,100,Northeast
+4/28/2014,Avalanche: Patsy Marly,Salt Lake,Skier,1.5,250,https://utahavalanchecenter.org/avalanche/21548,40.588667,-111.612339,10000,Unknown,700,West
+4/28/2014,Avalanche: Scotties Bowl,Salt Lake,Skier,1.25,150,https://utahavalanchecenter.org/avalanche/21552,40.562395,-111.675167,9800,36,200,East
+4/28/2014,Avalanche: Cardiff Bowl,Salt Lake,Skier,1.17,40,https://utahavalanchecenter.org/avalanche/21554,40.595218,-111.652293,10200,Unknown,300,Southeast
+4/27/2014,Avalanche: Little Superior,Salt Lake,Skier,0.67,100,https://utahavalanchecenter.org/avalanche/21537,40.591861,-111.662464,10500,34,2000,Southeast
+4/11/2014,Avalanche: Holy Toledo,Salt Lake,Natural,2.0,900,https://utahavalanchecenter.org/avalanche/21489,40.600632,-111.647227,10200,-999,900,Northwest
+4/7/2014,Avalanche: Pfeifferhorn,Salt Lake,,0.83,100,https://utahavalanchecenter.org/avalanche/21458,40.532328,-111.705208,11000,38,100,South
+4/7/2014,Avalanche: Cardiff Pass,Salt Lake,Skier,0.67,30,https://utahavalanchecenter.org/avalanche/21421,40.59524,-111.651843,10100,38,100,East
+4/7/2014,Avalanche: Little Cottonwood Canyon,Salt Lake,Natural,-999.0,-999,https://utahavalanchecenter.org/avalanche/21429,40.587885,-111.680489,10700,-999,3000,Southeast
+4/1/2014,Avalanche: Cardiff Pass,Salt Lake,Skier,1.0,100,https://utahavalanchecenter.org/avalanche/21333,40.594667,-111.646575,9400,30,100,East
+4/1/2014,Avalanche: Wolverine Cirque,Salt Lake,Skier,1.0,200,https://utahavalanchecenter.org/avalanche/21339,40.587103,-111.599808,10300,38,250,Northeast
+4/1/2014,Avalanche: Patsy Marly,Salt Lake,Skier,1.0,80,https://utahavalanchecenter.org/avalanche/21341,40.587656,-111.61309,9800,37,200,West
+3/29/2014,Avalanche: Lake Peak,Salt Lake,Skier,1.0,60,https://utahavalanchecenter.org/avalanche/21287,40.541691,-111.682503,10300,40,200,North
+3/29/2014,Avalanche: Coalpit,Salt Lake,Skier,-999.0,-999,https://utahavalanchecenter.org/avalanche/21289,40.546392,-111.731084,10600,-999,-999,North
+3/27/2014,Avalanche: Lake Peak,Salt Lake,Natural,0.83,175,https://utahavalanchecenter.org/avalanche/21271,40.543228,-111.68287,10500,38,450,Northeast
+3/27/2014,Avalanche: Wolverine Cirque,Salt Lake,Skier,1.0,50,https://utahavalanchecenter.org/avalanche/21245,40.589792,-111.607833,10400,35,250,East
+3/27/2014,Avalanche: Pioneer Ridge,Salt Lake,Skier,0.83,50,https://utahavalanchecenter.org/avalanche/21251,40.581492,-111.589658,10200,39,100,North
+3/15/2014,Avalanche: Lake Peak,Salt Lake,Skier,0.67,60,https://utahavalanchecenter.org/avalanche/21089,40.545428,-111.684357,9900,35,150,North
+3/12/2014,Avalanche: Two Trees,Salt Lake,Skier,0.5,20,https://utahavalanchecenter.org/avalanche/21039,40.593807,-111.643753,9200,35,200,Southeast
+3/12/2014,Avalanche: Little Superior,Salt Lake,Skier,-999.0,200,https://utahavalanchecenter.org/avalanche/21051,40.593164,-111.660016,10200,-999,800,Southeast
+3/12/2014,Avalanche: Monte Cristo,Salt Lake,Skier,0.33,40,https://utahavalanchecenter.org/avalanche/21059,40.591216,-111.668966,10800,40,Unknown,South
+3/11/2014,Avalanche: Hogum,Salt Lake,Natural,-999.0,500,https://utahavalanchecenter.org/avalanche/21053,40.531059,-111.729092,Unknown,Unknown,Unknown,North
+3/8/2014,Avalanche: Cardiac Bowl,Salt Lake,Skier,0.5,40,https://utahavalanchecenter.org/avalanche/21009,40.592722,-111.663022,10500,35,400,Northeast
+3/1/2014,Avalanche: Sunset Peak,Salt Lake,Unknown,-999.0,-999,https://utahavalanchecenter.org/avalanche/20927,40.578531,-111.593328,10300,Unknown,600,Northwest
+3/1/2014,Avalanche: Michigan City,Salt Lake,Skier,1.33,150,https://utahavalanchecenter.org/avalanche/20854,40.592674,-111.61656,9700,38,200,North
+3/1/2014,Avalanche: Red Baldy,Salt Lake,Natural,6.0,"1,000",https://utahavalanchecenter.org/avalanche/20874,40.540738,-111.669395,10600,40,900,North
+3/1/2014,Avalanche: Cardiff Fork,Salt Lake,Natural,3.5,200,https://utahavalanchecenter.org/avalanche/20884,40.602731,-111.648772,9900,-999,500,West
+2/28/2014,Avalanche: Two Dogs,Salt Lake,Unknown,1.0,100,https://utahavalanchecenter.org/avalanche/20831,40.599812,-111.642723,Unknown,Unknown,300,Northeast
+2/28/2014,Avalanche: Flagstaff Ridge,Salt Lake,Skier,1.0,100,https://utahavalanchecenter.org/avalanche/20809,40.595739,-111.640642,9700,Unknown,300,Southeast
+2/28/2014,Avalanche: Lackawaxen,Salt Lake,Snowboarder,1.17,350,https://utahavalanchecenter.org/avalanche/20818,40.592611,-111.560583,9900,45,1250,Northeast
+2/28/2014,Avalanche: Pink Pine,Salt Lake,Skier,1.0,80,https://utahavalanchecenter.org/avalanche/20821,40.558613,-111.692591,9200,37,600,Northeast
+2/28/2014,Avalanche: Big Cottonwood Canyon,Salt Lake,Snowboarder,1.17,150,https://utahavalanchecenter.org/avalanche/20823,40.591307,-111.560154,10600,Unknown,800,Northeast
+2/28/2014,Avalanche: Toledo Chutes,Salt Lake,,-999.0,-999,https://utahavalanchecenter.org/avalanche/20826,40.597531,-111.646585,-999,-999,-999,-999
+2/27/2014,Avalanche: Patsy Marly,Salt Lake,Skier,0.33,100,https://utahavalanchecenter.org/avalanche/20789,40.592839,-111.62015,9400,36,400,West
+2/15/2014,Avalanche: Twin Lakes Pass,Salt Lake,Snowboarder,4.0,200,https://utahavalanchecenter.org/avalanche/20515,40.592861,-111.608133,10000,40,800,East
+2/15/2014,Avalanche: Flagstaff Ridge,Salt Lake,,0.67,100,https://utahavalanchecenter.org/avalanche/20524,40.599,-111.642,9500,38,800,Southeast
+2/14/2014,Avalanche: Cardiac Bowl,Salt Lake,Natural,6.0,"1,000",https://utahavalanchecenter.org/avalanche/20500,40.595869,-111.666584,10500,-999,-999,East
+2/14/2014,Avalanche: upper Days,Salt Lake,Natural,4.0,40,https://utahavalanchecenter.org/avalanche/20484,40.601083,-111.642423,10000,Unknown,400,Northeast
+2/14/2014,Avalanche: Mill B South,Salt Lake,Natural,4.0,-999,https://utahavalanchecenter.org/avalanche/20748,40.590343,-111.696496,10800,-999,1750,Northwest
+2/14/2014,Avalanche: Wolverine Cirque,Salt Lake,Natural,0.5,300,https://utahavalanchecenter.org/avalanche/20493,40.588537,-111.608262,10500,Unknown,600,Northeast
+2/12/2014,Avalanche: Lake Mary,Salt Lake,Skier,3.0,35,https://utahavalanchecenter.org/avalanche/20436,40.587819,-111.592727,9600,42,50,East
+2/11/2014,Avalanche: Toledo Chutes,Salt Lake,Skier,-999.0,80,https://utahavalanchecenter.org/avalanche/20387,40.597545,-111.647988,10200,-999,500,Southeast
+2/11/2014,Avalanche: Lake Mary,Salt Lake,Snowboarder,4.0,60,https://utahavalanchecenter.org/avalanche/20391,40.587331,-111.592169,9600,Unknown,80,Northeast
+2/10/2014,Avalanche: Grizzly Gulch,Salt Lake,Snowboarder,0.5,30,https://utahavalanchecenter.org/avalanche/20345,40.597271,-111.610923,10200,Unknown,40,Southwest
+2/10/2014,Avalanche: Grizzly Gulch,Salt Lake,Skier,1.0,60,https://utahavalanchecenter.org/avalanche/20349,40.596427,-111.611754,10000,34,50,Southwest
+2/8/2014,Avalanche: Snake Creek,Salt Lake,Skier,2.0,50,https://utahavalanchecenter.org/avalanche/20270,40.585311,-111.563413,10100,-999,-999,Southeast
+2/6/2014,Avalanche: Monte Cristo,Salt Lake,Skier,0.83,40,https://utahavalanchecenter.org/avalanche/20220,40.594012,-111.671305,10700,37,150,Northeast
+2/5/2014,Avalanche: White Pine,Salt Lake,Snowboarder,0.67,25,https://utahavalanchecenter.org/avalanche/20197,40.554113,-111.671069,9900,Unknown,Unknown,West
+2/5/2014,Accident: Lake Peak,Salt Lake,Skier,-999.0,-999,https://utahavalanchecenter.org/avalanche/20208,40.54253,-111.683578,10600,-999,-999,North
+2/5/2014,Avalanche: Lake Peak,Salt Lake,Skier,0.5,20,https://utahavalanchecenter.org/avalanche/20234,40.543399,-111.68679,10300,Unknown,200,Northeast
+2/5/2014,Avalanche: Superior,Salt Lake,Skier,-999.0,-999,https://utahavalanchecenter.org/avalanche/20185,40.592415,-111.668472,10900,-999,-999,North
+1/31/2014,Avalanche: Emma Ridges,Salt Lake,Skier,0.83,30,https://utahavalanchecenter.org/avalanche/20097,40.597054,-111.627038,9700,36,350,South
+1/31/2014,Avalanche: Snake Creek,Salt Lake,Snowmobiler,0.83,100,https://utahavalanchecenter.org/avalanche/20111,40.575357,-111.579576,Unknown,39,100,Southeast
+1/12/2014,Avalanche: Catherines,Salt Lake,Unknown,2.0,200,https://utahavalanchecenter.org/avalanche/20046,40.579965,-111.591954,10100,-999,250,Northwest
+1/10/2014,Avalanche: Tuscarora,Salt Lake,Natural,-999.0,-999,https://utahavalanchecenter.org/avalanche/19663,40.584503,-111.598278,10600,-999,-999,East
+1/10/2014,Avalanche: Tuscarora,Salt Lake,Natural,2.0,100,https://utahavalanchecenter.org/avalanche/19687,40.584341,-111.597905,10300,-999,-999,East
+12/25/2013,Avalanche: Hide A Way Park,Salt Lake,Skier,1.5,50,https://utahavalanchecenter.org/avalanche/19342,40.602581,-111.633067,10000,Unknown,600,Northwest
+12/24/2013,Avalanche: Dry Fork,Salt Lake,Snowmobiler,3.0,300,https://utahavalanchecenter.org/avalanche/19315,40.568829,-111.601932,10400,-999,-999,East
+12/24/2013,Avalanche: Snake Creek,Salt Lake,Natural,-999.0,200,https://utahavalanchecenter.org/avalanche/19330,40.571458,-111.588993,10000,Unknown,1000,Northeast
+12/21/2013,Accident: Hidden Canyon,Salt Lake,Skier,2.5,40,https://utahavalanchecenter.org/avalanche/19261,40.594653,-111.561785,10000,32,500,Northwest
+12/21/2013,Accident: Patsy Marly,Salt Lake,Skier,2.0,125,https://utahavalanchecenter.org/avalanche/19240,40.592903,-111.618283,9700,35,100,North
+12/20/2013,Avalanche: Grizzly Gulch,Salt Lake,Skier,-999.0,100,https://utahavalanchecenter.org/avalanche/19217,40.595348,-111.620944,9300,36,60,Northwest
+12/20/2013,Accident: Hidden Canyon,Salt Lake,Skier,2.5,200,https://utahavalanchecenter.org/avalanche/19237,40.594231,-111.561621,10300,-999,700,Northwest
+12/19/2013,Avalanche: Davenport Hill,Salt Lake,Skier,1.0,150,https://utahavalanchecenter.org/avalanche/19189,40.599519,-111.623068,10000,36,500,Northwest
+12/14/2013,Avalanche: Holy Toledo,Salt Lake,Skier,1.25,60,https://utahavalanchecenter.org/avalanche/19120,40.598248,-111.649375,10100,35,1000,Northwest
+12/14/2013,Avalanche: Silver Fork,Salt Lake,Skier,1.0,20,https://utahavalanchecenter.org/avalanche/19142,40.601635,-111.607468,9800,40,100,Northwest
+12/9/2013,Avalanche: upper Days,Salt Lake,Skier,0.17,50,https://utahavalanchecenter.org/avalanche/18986,40.599093,-111.628561,10000,Unknown,300,Northeast
+12/9/2013,Accident: Grizzly Gulch,Salt Lake,Skier,2.0,150,https://utahavalanchecenter.org/avalanche/18960,40.594924,-111.621759,9200,40,100,North
+12/8/2013,Avalanche: Pioneer Ridge,Salt Lake,Unknown,1.0,125,https://utahavalanchecenter.org/avalanche/18970,40.582997,-111.58762,9800,Unknown,200,Northeast
+12/8/2013,Avalanche: Sunset Peak,Salt Lake,Natural,1.08,125,https://utahavalanchecenter.org/avalanche/18971,40.572859,-111.591353,10400,Unknown,150,East
+12/8/2013,Avalanche: Corner Chute,Salt Lake,Skier,2.0,40,https://utahavalanchecenter.org/avalanche/18923,40.600431,-111.618218,9900,33,200,Northwest
+12/8/2013,Avalanche: Davenport Hill,Salt Lake,Snowboarder,3.0,60,https://utahavalanchecenter.org/avalanche/18924,40.599161,-111.623197,10000,-999,150,Northwest
+12/8/2013,Avalanche: White Pine,Salt Lake,Skier,1.5,90,https://utahavalanchecenter.org/avalanche/18935,40.55329,-111.670682,9900,34,400,West
+12/8/2013,Avalanche: Days Fork,Salt Lake,Skier,1.25,20,https://utahavalanchecenter.org/avalanche/18940,40.60004,-111.636372,10100,45,400,North
+12/8/2013,Avalanche: All areas,Salt Lake,Natural,-999.0,-999,https://utahavalanchecenter.org/avalanche/18959,40.600249,-111.65843,-999,-999,-999,-999
+12/7/2013,Avalanche: Cardiff Bowl,Salt Lake,Skier,0.5,20,https://utahavalanchecenter.org/avalanche/18906,40.595382,-111.651779,10000,32,250,Southeast
+12/7/2013,Avalanche: Red Baldy,Salt Lake,Natural,-999.0,-999,https://utahavalanchecenter.org/avalanche/18925,40.54026,-111.668816,11100,-999,-999,Northwest
+12/6/2013,Avalanche: Pioneer Bowl,Salt Lake,Unknown,-999.0,150,https://utahavalanchecenter.org/avalanche/18890,40.582508,-111.58114,10000,Unknown,350,Northwest
+12/6/2013,Avalanche: Cardiff Fork,Salt Lake,Natural,-999.0,-999,https://utahavalanchecenter.org/avalanche/18900,40.600764,-111.648216,10200,Unknown,Unknown,West
+12/5/2013,Avalanche: Rocky Point,Salt Lake,Skier,0.67,80,https://utahavalanchecenter.org/avalanche/18869,40.578238,-111.597962,10400,40,175,Northeast
+12/3/2013,Avalanche: Evergreen Ridge,Salt Lake,Skier,1.0,60,https://utahavalanchecenter.org/avalanche/18816,40.605558,-111.593349,9200,-999,250,Northeast
+12/3/2013,Avalanche: Dog Lake Chutes,Salt Lake,Skier,0.33,35,https://utahavalanchecenter.org/avalanche/18818,40.586039,-111.588242,9700,-999,300,Northeast
+12/3/2013,Avalanche: Evergreen Ridge,Salt Lake,Skier,1.0,100,https://utahavalanchecenter.org/avalanche/18819,40.600443,-111.598413,9800,40,400,Northwest
+11/24/2013,Avalanche: Davenport Hill,Salt Lake,,1.5,60,https://utahavalanchecenter.org/avalanche/18771,40.599772,-111.620171,10000,40,500,North
+11/24/2013,Avalanche: Hide A Way Park,Salt Lake,Unknown,-999.0,-999,https://utahavalanchecenter.org/avalanche/18778,40.60369,-111.632509,-999,-999,-999,North
+11/17/2013,Avalanche: Patsy Marly,Salt Lake,Skier,4.0,60,https://utahavalanchecenter.org/avalanche/18611,40.589189,-111.609421,10000,Unknown,100,North
+11/17/2013,Avalanche: Twin Lakes Pass,Salt Lake,Skier,0.17,25,https://utahavalanchecenter.org/avalanche/18615,40.592057,-111.608477,10200,Unknown,200,Northeast
+11/17/2013,Avalanche: Davenport Hill,Salt Lake,Unknown,1.25,-999,https://utahavalanchecenter.org/avalanche/18616,40.599807,-111.621802,10000,42,Unknown,Northeast
+11/17/2013,Avalanche: Cardiac Bowl,Salt Lake,Skier,-999.0,70,https://utahavalanchecenter.org/avalanche/18595,40.593385,-111.66564,10600,36,400,Northeast
+11/17/2013,Avalanche: Sunset Peak,Salt Lake,Skier,2.0,45,https://utahavalanchecenter.org/avalanche/18601,40.577635,-111.595473,10400,40,100,North
+11/16/2013,Avalanche: Rocky Point,Salt Lake,Skier,0.67,60,https://utahavalanchecenter.org/avalanche/18580,40.57851,-111.597812,10400,-999,300,Northeast
+11/6/2013,Avalanche: Mt Baldy,Salt Lake,Skier,2.0,200,https://utahavalanchecenter.org/avalanche/18505,40.570459,-111.639311,10600,-999,900,North
+10/29/2013,Avalanche: Collins Gulch,Salt Lake,Skier,0.83,60,https://utahavalanchecenter.org/avalanche/18448,40.572598,-111.640363,10100,Unknown,300,North
+10/29/2013,Avalanche: Collins Gulch,Salt Lake,Skier,0.83,30,https://utahavalanchecenter.org/avalanche/18449,40.572512,-111.639311,10000,-999,250,North
+10/29/2013,Avalanche: Pioneer Bowl,Salt Lake,Natural,1.0,500,https://utahavalanchecenter.org/avalanche/18458,40.581497,-111.582642,10100,40,400,Northwest
