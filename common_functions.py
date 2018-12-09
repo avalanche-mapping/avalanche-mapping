@@ -32,14 +32,22 @@ study_area_gdf = gpd.GeoDataFrame(geometry=[study_area], crs=SHAPE_CRS)
 study_area_box = box(MIN_X, MIN_Y, MAX_X, MAX_Y)
 study_area_box_gdf = gpd.GeoDataFrame(geometry=[study_area_box], crs=SHAPE_CRS)
 
-HOME_DIR = os.path.join(et.io.HOME, 'data')
-original_data = os.path.join(HOME_DIR, 'original')
-modified_data = os.path.join(HOME_DIR, 'modified')
-avalanche_shapes_path = os.path.join(original_data, "Cottonwood_UT_paths_intersection", "avalanche_intersection.shp")
+home_dir = os.path.dirname(os.path.realpath(__file__))
+data_dir = os.path.join(home_dir, 'data')
+
+vector_dir = os.path.join(data_dir, 'vector')
+original_vector_data = os.path.join(vector_dir, 'original')
+modified_vector_data = os.path.join(vector_dir, 'modified')
+
+raster_dir = os.path.join(data_dir, 'raster')
+original_raster_data = os.path.join(raster_dir, 'original')
+modified_raster_data = os.path.join(raster_dir, 'modified')
+
+avalanche_shapes_path = os.path.join(modified_vector_data, "Cottonwood_UT_paths_intersection", "avalanche_intersection.shp")
 # Taken from the metadata of the shapefile
 avalanche_crs = "+init=epsg:2152"
 avalanche_shapes_object = gpd.read_file(avalanche_shapes_path, crs=avalanche_crs)
-elevation_dem_path = os.path.join(original_data, "ASTGTM2_N40W112", "ASTGTM2_N40W112_dem.tif")
+elevation_dem_path = os.path.join(original_raster_data, "ASTGTM2_N40W112", "ASTGTM2_N40W112_dem.tif")
 
 def rasterstats_grouped_by_height(shape, data, data_transform, statistic):
     """
@@ -459,7 +467,7 @@ def plot_dataframe(ax, polygon, opacity=1.0, plot_boundary=False):
 
 
 def generate_unioned_avalanche_overlay(crs, load_from_file_if_available=True):
-    target_file = os.path.join(modified_data, "union_dataset.geojson")
+    target_file = os.path.join(modified_vector_data, "union_dataset.geojson")
     if load_from_file_if_available and os.path.isfile(target_file):
         avalanche_overlay_shape = gpd.read_file(target_file)
     else:
