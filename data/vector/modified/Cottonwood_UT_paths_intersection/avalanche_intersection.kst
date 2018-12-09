@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Theme>
+	<name>avalanche_intersection</name>
+	<nameMapping>
+		<SimpleFieldMapping_string><field>SIZE_OF_SL</field>
+</SimpleFieldMapping_string>
+	</nameMapping>
+	<colorMapping>
+		<BucketFieldMapping_string_int>
+			<field>SIZE_OF_SL</field>
+			<discrete>1</discrete>
+			<buckets>
+				<Bucket_string_int>
+					<minBound></minBound>
+					<maxBound></maxBound>
+					<value>5</value>
+				</Bucket_string_int>
+				<Bucket_string_int>
+					<minBound>MAJOR</minBound>
+					<maxBound>MAJOR</maxBound>
+					<value>15</value>
+				</Bucket_string_int>
+				<Bucket_string_int>
+					<minBound>SIGNIFICANT</minBound>
+					<maxBound>SIGNIFICANT</maxBound>
+					<value>12</value>
+				</Bucket_string_int>
+				<Bucket_string_int>
+					<minBound>MINOR</minBound>
+					<maxBound>MINOR</maxBound>
+					<value>8</value>
+				</Bucket_string_int>
+				<Bucket_string_int>
+					<minBound>ELBERT'S SLIDE</minBound>
+					<maxBound>ELBERT'S SLIDE</maxBound>
+					<value>15</value>
+				</Bucket_string_int>
+			</buckets>
+		</BucketFieldMapping_string_int>
+	</colorMapping>
+	<iconMapping>
+		<ConstantMapping_string><value>-1</value>
+</ConstantMapping_string>
+	</iconMapping>
+	<palette>
+		<ThemePalette>
+			<entries>ff00ff00</entries>
+			<entries>ff00ff22</entries>
+			<entries>ff00ff44</entries>
+			<entries>ff00ff66</entries>
+			<entries>ff00ff88</entries>
+			<entries>ff00ffaa</entries>
+			<entries>ff00ffcc</entries>
+			<entries>ff00ffee</entries>
+			<entries>ff00eeff</entries>
+			<entries>ff00ccff</entries>
+			<entries>ff00aaff</entries>
+			<entries>ff0088ff</entries>
+			<entries>ff0066ff</entries>
+			<entries>ff0044ff</entries>
+			<entries>ff0022ff</entries>
+			<entries>ff0000ff</entries>
+		</ThemePalette>
+	</palette>
+	<clampMode>1</clampMode>
+</Theme>
+</kml>
