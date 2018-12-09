@@ -34,12 +34,12 @@ study_area_box_gdf = gpd.GeoDataFrame(geometry=[study_area_box], crs=SHAPE_CRS)
 
 HOME_DIR = os.path.join(et.io.HOME, 'data')
 original_data = os.path.join(HOME_DIR, 'original')
+modified_data = os.path.join(HOME_DIR, 'modified')
 avalanche_shapes_path = os.path.join(original_data, "Cottonwood_UT_paths_intersection", "avalanche_intersection.shp")
 # Taken from the metadata of the shapefile
 avalanche_crs = "+init=epsg:2152"
 avalanche_shapes_object = gpd.read_file(avalanche_shapes_path, crs=avalanche_crs)
 elevation_dem_path = os.path.join(original_data, "ASTGTM2_N40W112", "ASTGTM2_N40W112_dem.tif")
-
 
 def rasterstats_grouped_by_height(shape, data, data_transform, statistic):
     """
@@ -76,32 +76,14 @@ def rasterstats_grouped_by_height(shape, data, data_transform, statistic):
             difference: The avalanche column subtracted by the no_avalanche column
 
     """
-    
-    dndvi_in_avalanche_paths = rs.zonal_stats(shape,
-                                              data,
-                                              affine=data_transform,
-                                              geojson_out=True,
-                                              stats=statistic)
-
-    results = pd.concat([pd.DataFrame({"avalanche_id": [item["properties"]["avalanche_id"]], 
-                                    "height_bucket": [item["properties"]["height_bucket"]], 
-                                    statistic: [item["properties"][statistic]],
-                                    "size": [item["properties"]["geometry_sq_meters"]]}, 
-                        columns=["avalanche_id", "height_bucket", statistic, "size"]) 
-            for item in dndvi_in_avalanche_paths],
-            ignore_index=True)
-
-    results['avalanche_id'] = results['avalanche_id'].fillna(value=False)
-    results['avalanche_id'] = results['avalanche_id'] != False
-    results = results.rename({'avalanche_id': 'is_avalanche'}, axis='columns')
-
+    results = get_zonal_stats_dataframe(shape, data, data_transform, statistic)
     results_avalanche = (results
-                        .where(results["is_avalanche"])
+                        .where(~(pd.isna(results['avalanche_id'])))
                         .groupby(["height_bucket"])[statistic]
                         .mean())
                         
     results_no_avalanche = (results
-                        .where(~results["is_avalanche"])
+                        .where(pd.isna(results['avalanche_id']))
                         .groupby(["height_bucket"])[statistic]
                         .mean())
 
@@ -116,8 +98,46 @@ def rasterstats_grouped_by_height(shape, data, data_transform, statistic):
     return merged_results
 
 
+def get_zonal_stats_dataframe(shape, data, data_transform, statistic):
+    """
+    A wrapper around zonal stats, this packages the output into a geodataframe containing the following columns:
+        avalanche_id
+        height_bucket
+        [statistic]
+        size
 
-def get_height_bins(dem_path, data, data_transform, statistic, input_mask, height_interval=100):
+    Parameters
+    ----------
+    shape: geopandas object
+        The input shape which is the resulting union of avalanche shapes and elevation buckets.
+        The shape input must have the following columns:    
+            avalanche_id: a unique identifier/integer for each avalanche
+            height_bucket: The height bucket that this avalanche falls under
+            geometry_sq_meters: The size of the geometry of each row
+    data: ndarray
+        The values which you would like to use in this calculation
+    data_transform: rasterio.transform
+        The transform for the data array
+    statistic: string
+        The statistic you would like to perform with rasterstats.
+
+    Returns
+    ----------
+    results: geopandas dataframe
+        A geopandas dataframe containing the following columns:
+            height_bucket: The bucketed height in intervals as specified within the input shape
+            avalanche_id: A unique identifier to indicate what avalanche path this shape is part of
+            [statistic]: The statistic over this shape
+            size: The size of this shape
+    """
+    results_geojson = rs.zonal_stats(shape,
+                                     data,
+                                     affine=data_transform,
+                                     stats=statistic)
+    shape[statistic] = [i[statistic] for i in results_geojson]
+    return shape
+
+def get_height_bins(dem_path, data, data_transform, data_crs, statistic, input_mask, height_interval=100):
     """
     Given a digital elevation model path, input data and a given statistic (eg max, min, mean), 
     calculate the statistic of the input data for each height_interval of that data.
@@ -145,11 +165,11 @@ def get_height_bins(dem_path, data, data_transform, statistic, input_mask, heigh
     statistic_list: list of floats
         A list of calculated statistics for each height_list bin on the data
     """
-    gpd_height_buckets, out_transform = dem_to_height_polygon_gdf(dem_path, input_mask, height_interval=height_interval)
+    gpd_height_buckets = dem_to_height_polygon_gdf(dem_path, input_mask, height_interval=height_interval)
     
-    data_in_height_buckets = rs.zonal_stats(gpd_height_buckets,
+    data_in_height_buckets = rs.zonal_stats(gpd_height_buckets.to_crs(data_crs),
                                             data,
-                                            affine=out_transform,
+                                            affine=data_transform,
                                             geojson_out=True,
                                             stats=statistic)
     height_list = []
@@ -197,27 +217,31 @@ def dem_to_height_polygon_gdf(dem_path, input_mask, height_interval=100):
     gpd_polygonized_raster = gpd.GeoDataFrame.from_features(list(height_buckets_geometry), crs=dem_projection)
     gpd_height_buckets = gpd_polygonized_raster.dissolve(by=attribute_name)
     
-    return gpd_height_buckets, out_transform
+    return gpd_height_buckets
                 
 
-def plot_bar(x, x_label, y, y_label, title, source, ax=None):
+def plot_bar(df, x_name, x_label, y_name_list, y_label, title, source, series_names=None, ax=None):
     """
-    Given data and other information, create a bar chart
+    Create a bar chart from a dataframe.
     
     Parameters
     ----------
-    x: list or ndarray
-        x-axis data
+    df: dataframe
+        Input dataframe (geo or pandas)
+    x_name: string
+        The column name for the x axis
     x_label: string
-        label for x-axis
-    y: list or ndarray
-        y-axis data
+        The x-axis label
+    y_list: list or ndarray
+        A list of column names for the y-axis
     y_label: string
-        label for y-axis
+        The y-axis label
     title: string
         Title for the chart
     source: string
         Source text
+    series_names: list
+        Alternative names to use to represent the series in the legend
     ax: pyplot axes
         axes object to use when plotting.  If none is specified, then one is created in this function
     
@@ -227,9 +251,13 @@ def plot_bar(x, x_label, y, y_label, title, source, ax=None):
         The ax parameter or an ax object that was created in the function
     """
     if ax is None:
-        _, ax = plt.subplots()
+        _, ax = plt.subplots(figsize=(10, 10))
 
-    _ = ax.bar(x, y)
+    if series_names is not None:        
+        df = df.rename(columns={i:j for i, j in zip(y_name_list, series_names)})
+        df.plot(ax=ax, x=x_name, y=series_names, kind="bar")
+    else:
+        df.plot(ax=ax, x=x_name, y=y_name_list, kind="bar")
 
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
@@ -348,8 +376,7 @@ def plot_array_and_vector(raster,
     fig, ax: figure and axes objects
         The resulting fig and ax objects
     """
-    return True
-    _, ax = plt.subplots(figsize=(10, 10))
+    fig, ax = plt.subplots(figsize=(10, 10))
 
     # Get the extent of the plotted area
     extent = get_extent(raster_crs)
@@ -431,4 +458,25 @@ def plot_dataframe(ax, polygon, opacity=1.0, plot_boundary=False):
     polygon.plot(ax=ax, alpha=opacity)
 
 
-height_polygon_gdf, _ = dem_to_height_polygon_gdf(elevation_dem_path, study_area_box_gdf)
+def generate_unioned_avalanche_overlay(crs, load_from_file_if_available=True):
+    target_file = os.path.join(modified_data, "union_dataset.geojson")
+    if load_from_file_if_available and os.path.isfile(target_file):
+        avalanche_overlay_shape = gpd.read_file(target_file)
+    else:
+        avalanche_overlay_shape = gpd.overlay(height_polygon_gdf
+                                            .reset_index()
+                                            .to_crs(crs), 
+                                        avalanche_shapes_object
+                                            .reset_index()
+                                            .rename({'index':'avalanche_id'}, axis='columns')
+                                            .to_crs(crs), 
+                                        how='union')
+        avalanche_overlay_shape.crs = crs
+        # Calculate the size of each polygon so every polygon has appropriate representation
+        avalanche_overlay_shape['geometry_sq_meters'] = avalanche_overlay_shape['geometry'] \
+                                                        .to_crs({'init': 'epsg:3395'}) \
+                                                        .map(lambda p: p.area / 10**6)
+        avalanche_overlay_shape.to_file(target_file, driver="GeoJSON")
+    return avalanche_overlay_shape
+
+height_polygon_gdf = dem_to_height_polygon_gdf(elevation_dem_path, study_area_box_gdf)
