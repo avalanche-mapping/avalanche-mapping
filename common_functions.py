@@ -1,11 +1,15 @@
 import os
 
 from shapely.geometry import (box, Polygon)
-import geopandas as gpds
+import geopandas as gpd
 import matplotlib.pyplot as plt
+import numpy as np
 import pyproj
 import earthpy.spatial as es
 import earthpy as et
+import pandas as pd
+import rasterio as rio
+import rasterstats as rs
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 # The CRS of all hard-coded coordinates relating to bounding boxes and polygons
@@ -22,16 +26,244 @@ study_area = Polygon([[-111.7501813, 40.5042792],
                       [-111.5588601, 40.5774339], 
                       [-111.5591603, 40.6134677], 
                       [-111.7511872, 40.5943609]])
-study_area_gdf = gpds.GeoDataFrame(geometry=[study_area], crs=SHAPE_CRS)
+study_area_gdf = gpd.GeoDataFrame(geometry=[study_area], crs=SHAPE_CRS)
 
 # Defining our study area bounding box and associated dataframe
 study_area_box = box(MIN_X, MIN_Y, MAX_X, MAX_Y)
-study_area_box_gdf = gpds.GeoDataFrame(geometry=[study_area_box], crs=SHAPE_CRS)
+study_area_box_gdf = gpd.GeoDataFrame(geometry=[study_area_box], crs=SHAPE_CRS)
 
 HOME_DIR = os.path.join(et.io.HOME, 'data')
 original_data = os.path.join(HOME_DIR, 'original')
 avalanche_shapes_path = os.path.join(original_data, "Cottonwood_UT_paths_intersection", "avalanche_intersection.shp")
- 
+# Taken from the metadata of the shapefile
+avalanche_crs = "+init=epsg:2152"
+avalanche_shapes_object = gpd.read_file(avalanche_shapes_path, crs=avalanche_crs)
+elevation_dem_path = os.path.join(original_data, "ASTGTM2_N40W112", "ASTGTM2_N40W112_dem.tif")
+
+
+def rasterstats_grouped_by_height(shape, data, data_transform, statistic):
+    """
+    Given an input shape which consists of the union between avalanche 
+    shapes and elevation buckets, determine the statistic of the input 
+    data using rasterstats.  Then, group this data into separate height_bucket
+    groups and determine the mean difference in the input data between shapes
+    that are part of an avalanche path and shapes that are not part of an avalanche 
+    path.  Finally, return a dataframe with these values and the resulting difference
+    between these values.  See the Returns note for additional details.
+
+    Parameters
+    ----------
+    shape: geopandas object
+        The input shape which is the resulting union of avalanche shapes and elevation buckets.
+        The shape input must have the following columns:    
+            avalanche_id: a unique identifier/integer for each avalanche
+            height_bucket: The height bucket that this avalanche falls under
+            geometry_sq_meters: The size of the geometry of each row
+    data: ndarray
+        The values which you would like to use in this calculation
+    data_affine: rasterio.transform
+        The transform for the data array
+    statistic: string
+        The statistic you would like to perform with rasterstats.
+    
+    Returns
+    ----------
+    merged_results: geopandas dataframe
+        A geopandas dataframe containing the following columns:
+            height_bucket: The bucketed height in intervals as specified within the input shape
+            [statistic]_avalanche: The mean of the input data at this height where there was no avalanche shapefile
+            [statistic]_no_avalanche: The mean of the input data at this height where there was an avalanche shapefile
+            difference: The avalanche column subtracted by the no_avalanche column
+
+    """
+    
+    dndvi_in_avalanche_paths = rs.zonal_stats(shape,
+                                              data,
+                                              affine=data_transform,
+                                              geojson_out=True,
+                                              stats=statistic)
+
+    results = pd.concat([pd.DataFrame({"avalanche_id": [item["properties"]["avalanche_id"]], 
+                                    "height_bucket": [item["properties"]["height_bucket"]], 
+                                    statistic: [item["properties"][statistic]],
+                                    "size": [item["properties"]["geometry_sq_meters"]]}, 
+                        columns=["avalanche_id", "height_bucket", statistic, "size"]) 
+            for item in dndvi_in_avalanche_paths],
+            ignore_index=True)
+
+    results['avalanche_id'] = results['avalanche_id'].fillna(value=False)
+    results['avalanche_id'] = results['avalanche_id'] != False
+    results = results.rename({'avalanche_id': 'is_avalanche'}, axis='columns')
+
+    results_avalanche = (results
+                        .where(results["is_avalanche"])
+                        .groupby(["height_bucket"])[statistic]
+                        .mean())
+                        
+    results_no_avalanche = (results
+                        .where(~results["is_avalanche"])
+                        .groupby(["height_bucket"])[statistic]
+                        .mean())
+
+    merged_results = pd.merge(results_avalanche.to_frame(), 
+                            results_no_avalanche.to_frame(),
+                            how='inner', 
+                            on='height_bucket',
+                            suffixes=('_avalanche', '_no_avalanche'))
+
+    merged_results["difference"] = merged_results[statistic + "_avalanche"] - merged_results[statistic + "_no_avalanche"]
+    merged_results = merged_results.reset_index()
+    return merged_results
+
+
+
+def get_height_bins(dem_path, data, data_transform, statistic, input_mask, height_interval=100):
+    """
+    Given a digital elevation model path, input data and a given statistic (eg max, min, mean), 
+    calculate the statistic of the input data for each height_interval of that data.
+    
+    Parameters
+    ----------
+    dem_path: string 
+        Path to the DEM data
+    data: ndarray
+        An array of data that you would like to calculate the input 
+        statistic on in each generated height bin
+    data_transform: affine
+        Affine for the input ndarray
+    statistic: string
+        The statistic for rasterstats
+    input_mask: geopandas object
+        A shape to mask the incoming DEM
+    height_interval: int
+        An interval at which you would like to bin the height
+    
+    Returns
+    ----------
+    height_list: list of ints
+        A list of integers representing the height for each bin
+    statistic_list: list of floats
+        A list of calculated statistics for each height_list bin on the data
+    """
+    gpd_height_buckets, out_transform = dem_to_height_polygon_gdf(dem_path, input_mask, height_interval=height_interval)
+    
+    data_in_height_buckets = rs.zonal_stats(gpd_height_buckets,
+                                            data,
+                                            affine=out_transform,
+                                            geojson_out=True,
+                                            stats=statistic)
+    height_list = []
+    statistic_list = []
+    for height_bucket in data_in_height_buckets:
+        height_list.append(height_bucket['id'])
+        statistic_list.append(height_bucket['properties'][statistic])
+    return height_list, statistic_list
+
+
+def dem_to_height_polygon_gdf(dem_path, input_mask, height_interval=100):
+    """
+    Given a digital elevation model path, generate a shapefile with shapes according to a specific height interval.
+    
+    Parameters
+    ----------
+    dem_path: string
+        A path to a specified dem file
+    input_mask: geopandas object
+        A shape to mask the incoming DEM
+    height_interval: int
+        The height interval at which to create the DEM polygons (in units of the DEM data)
+
+    Returns
+    ----------
+    gpd_height_buckets: geopandas dataframe
+        A dataframe in the DEM projection that contains shapes that are broken in a contour at every 
+        height_interval units in the DEM.
+    """
+    with rio.open(dem_path) as src:
+        dem_projection = src.crs
+        mask_reprojected = input_mask.to_crs(dem_projection)
+        masked_band, out_transform = rio.mask.mask(src, mask_reprojected.geometry, crop=True)            
+    masked_band = np.squeeze(masked_band)
+    
+    # Make polygon that is defined by heights that are in the specified intervals
+    height_buckets = (np.round(masked_band / height_interval) * height_interval).astype(np.int)
+    attribute_name = 'height_bucket'
+    height_buckets_geometry = (
+        {'properties': {attribute_name: v}, 'geometry': s}
+        for i, (s, v) 
+        in enumerate(
+            rio.features.shapes(height_buckets, transform=out_transform)))
+    # Create a dataframe from our new attributes and dissolve similar height buckets together
+    gpd_polygonized_raster = gpd.GeoDataFrame.from_features(list(height_buckets_geometry), crs=dem_projection)
+    gpd_height_buckets = gpd_polygonized_raster.dissolve(by=attribute_name)
+    
+    return gpd_height_buckets, out_transform
+                
+
+def plot_bar(x, x_label, y, y_label, title, source, ax=None):
+    """
+    Given data and other information, create a bar chart
+    
+    Parameters
+    ----------
+    x: list or ndarray
+        x-axis data
+    x_label: string
+        label for x-axis
+    y: list or ndarray
+        y-axis data
+    y_label: string
+        label for y-axis
+    title: string
+        Title for the chart
+    source: string
+        Source text
+    ax: pyplot axes
+        axes object to use when plotting.  If none is specified, then one is created in this function
+    
+    Returns
+    ----------
+    ax: axes object
+        The ax parameter or an ax object that was created in the function
+    """
+    if ax is None:
+        _, ax = plt.subplots()
+
+    _ = ax.bar(x, y)
+
+    ax.set_xlabel(x_label)
+    ax.set_ylabel(y_label)
+    ax.set_title(title)
+    ax.tick_params(axis='x', rotation=45)
+    add_data_source_text(ax, source)
+    return ax
+
+
+
+def make_shapefile_inverse_within_box(within, shapes):
+    '''
+    From a given shape/collection of shapes, create a shape that
+    fills the negative space within a given bounding_box.
+
+    Parameters
+    ----------
+    within: pandas geodataframe
+        The bounding polygon defining the maximum extent of the output polygon
+    shapes: pandas geodataframe
+        The polygons which will act as cookie-cutters within the incoming polygon
+
+    Returns
+    ----------
+    inverse: pandas geodataframe
+        The result of cookie-cutting within with shapes
+    '''
+    inverse = gpd.overlay(within, shapes, how='symmetric_difference')
+    # For some reason the result is a crs-naive dataframe.  
+    # Update it so it has the same crs as the input.
+    inverse.crs = within.crs
+    return inverse
+
+
 def calculate_NDVI(data, red_idx=0, nir_idx=3):
     """
     Calculate the NDVI for a given raster (numpy) input with specified red/infrared indices.
@@ -116,7 +348,8 @@ def plot_array_and_vector(raster,
     fig, ax: figure and axes objects
         The resulting fig and ax objects
     """
-    fig, ax = plt.subplots(figsize=(10, 10))
+    return True
+    _, ax = plt.subplots(figsize=(10, 10))
 
     # Get the extent of the plotted area
     extent = get_extent(raster_crs)
@@ -135,7 +368,6 @@ def plot_array_and_vector(raster,
         raise ValueError("Cannot plot raster with %d dimension." % raster.ndim)
         
     # Plot the avalanche shapes
-    avalanche_shapes_object = gpds.read_file(avalanche_shapes_path)
     plot_dataframe(ax, avalanche_shapes_object.geometry, plot_boundary=True)
     
     # Plot the study area outline
@@ -197,3 +429,6 @@ def plot_dataframe(ax, polygon, opacity=1.0, plot_boundary=False):
     if plot_boundary:
         polygon = polygon.boundary
     polygon.plot(ax=ax, alpha=opacity)
+
+
+height_polygon_gdf, _ = dem_to_height_polygon_gdf(elevation_dem_path, study_area_box_gdf)
