@@ -43,11 +43,18 @@ raster_dir = os.path.join(data_dir, 'raster')
 original_raster_data = os.path.join(raster_dir, 'original')
 modified_raster_data = os.path.join(raster_dir, 'modified')
 
+image_dir = os.path.join(data_dir, 'images')
+
 avalanche_shapes_path = os.path.join(modified_vector_data, "Cottonwood_UT_paths_intersection", "avalanche_intersection.shp")
 # Taken from the metadata of the shapefile
 avalanche_crs = "+init=epsg:2152"
 avalanche_shapes_object = gpd.read_file(avalanche_shapes_path, crs=avalanche_crs)
+
+snowfall_data_path = os.path.join(original_vector_data, "snowfall.csv")
+snowfall_data_df = pd.read_csv(snowfall_data_path)
+
 elevation_dem_path = os.path.join(original_raster_data, "ASTGTM2_N40W112", "ASTGTM2_N40W112_dem.tif")
+
 
 def rasterstats_grouped_by_height(shape, data, data_transform, statistic):
     """
@@ -228,7 +235,7 @@ def dem_to_height_polygon_gdf(dem_path, input_mask, height_interval=100):
     return gpd_height_buckets
                 
 
-def plot_bar(df, x_name, x_label, y_name_list, y_label, title, source, series_names=None, ax=None):
+def plot_bar(df, x_name, x_label, y_name_list, y_label, title, source, series_names=None, ax=None, fname=None):
     """
     Create a bar chart from a dataframe.
     
@@ -252,14 +259,16 @@ def plot_bar(df, x_name, x_label, y_name_list, y_label, title, source, series_na
         Alternative names to use to represent the series in the legend
     ax: pyplot axes
         axes object to use when plotting.  If none is specified, then one is created in this function
-    
+    fname: string
+        If specified and a valid writable filename, write this plot to disk at this
+
     Returns
     ----------
     ax: axes object
         The ax parameter or an ax object that was created in the function
     """
     if ax is None:
-        _, ax = plt.subplots(figsize=(10, 10))
+        _, ax = plt.subplots(figsize=(16, 9))
 
     if series_names is not None:        
         df = df.rename(columns={i:j for i, j in zip(y_name_list, series_names)})
@@ -267,13 +276,16 @@ def plot_bar(df, x_name, x_label, y_name_list, y_label, title, source, series_na
     else:
         df.plot(ax=ax, x=x_name, y=y_name_list, kind="bar")
 
-    ax.set_xlabel(x_label)
-    ax.set_ylabel(y_label)
-    ax.set_title(title)
+    ax.set_xlabel(x_label, fontsize=22)
+    ax.set_ylabel(y_label, fontsize=22)
+    ax.set_title(title, fontsize=25)
     ax.tick_params(axis='x', rotation=45)
     add_data_source_text(ax, source)
+    
+    # Save and plot fig
+    if fname is not None:
+        plt.savefig(os.path.join(image_dir, fname))
     return ax
-
 
 
 def make_shapefile_inverse_within_box(within, shapes):
@@ -343,20 +355,22 @@ def add_data_source_text(ax, text):
          transform=ax.transAxes)
 
 
-def plot_array_and_vector(raster, 
-                          raster_crs,
-                          title, 
-                          data_source_text, 
-                          plot_paths=True,
-                          plot_study_area=True,
-                          fname=None,
-                          rgb_order=[0, 1, 2],
-                          cmap='PiYG'):
+def plot_rgb_and_vector(raster, 
+                        raster_crs,
+                        shapes,
+                        title, 
+                        data_source_text, 
+                        plot_paths=True,
+                        plot_study_area=True,
+                        fname=None,
+                        rgb_order=[0, 1, 2],
+                        color=None,
+                        cmap=None,
+                        display_plot=True):
     """
-    Plot incoming numpy array.  If the array is a single band, plot using given cmap.  
-    If array is 3 or more bands, plot as RGB with the requested rgb order.  If plot_paths 
-    or plot_study_area are true, plot the avalanche paths and the study area overlayed 
-    on the raster data.
+    Plot incoming 3xnxm numpy array.  If plot_paths or plot_study_area are true, 
+    plot the incoming shapes and the study area overlayed on the raster data, with the colormap
+    plotted for the "color" column if specified.
     
     Parameters
     ----------
@@ -364,6 +378,93 @@ def plot_array_and_vector(raster,
         The raster array which contains at least 3 stacked 2-d arrays.
     raster_crs: dict
         The crs of the incoming raster.
+    shapes: pandas geodataframe
+        A geodataframe to plot over the raster
+    title: str
+        A title for the plot.
+    data_source_text: str
+        The data source text.
+    plot_paths: bool
+        A bool indicating whether you would like to plot avalanche paths.
+    plot_study_area: bool
+        A bool indicating whether you would like to plot the study area polygon.
+    fname: str
+        The filename output.  If None, no file is saved.        
+    rgb_order: list
+        The equivalent red, green and blue bands to be plotted if raster has at least 3 stacked 2-d arrays.
+    color: string
+        A column in the shapes dataframe to plot the color of.
+    cmap: str
+        The color map to use if color is specified
+        
+    Returns
+    ----------
+    fig, ax: figure and axes objects
+        The resulting fig and ax objects
+    """
+    fig, ax = plt.subplots(figsize=(16, 9))
+    if color is not None and cmap is None:
+        cmap = 'RdYlGn'
+    # Get the extent of the plotted area
+    extent = get_extent(raster_crs)
+    
+    # Plot the raster
+    if raster.ndim == 3:
+        es.plot_rgb(raster, rgb=[0, 1, 2], ax=ax, extent=extent)
+    else:
+        raise ValueError("Cannot plot raster with %d dimension(s)." % raster.ndim)
+        
+    if plot_paths:
+        # Plot the avalanche shapes
+        shapes = shapes.to_crs(raster_crs)
+        if color is not None:
+            plot_boundary = False
+        else:
+            plot_boundary = True
+        plot_dataframe(ax, shapes, color=color, cmap=cmap, plot_boundary=plot_boundary)
+    if plot_study_area:
+        # Plot the study area outline
+        polygon_geodataframe = study_area_gdf.to_crs(raster_crs)
+        plot_dataframe(ax, polygon_geodataframe, plot_boundary=True)
+    
+    # Add title and plot configuration
+    ax.set_title(title, fontsize=30)            
+    add_data_source_text(ax, data_source_text)
+    ax.get_legend()
+    ax.axis('off')
+    
+    # Save and plot fig
+    if fname is not None:
+        plt.savefig(os.path.join(image_dir, fname))
+    if display_plot:
+        plt.show()
+    plt.close()
+    return fig, ax
+
+
+def plot_array_and_vector(raster, 
+                          raster_crs,
+                          shapes,
+                          title, 
+                          data_source_text, 
+                          plot_paths=True,
+                          plot_study_area=True,
+                          fname=None,
+                          vmax=1,
+                          vmin=-1,
+                          rgb_order=[0, 1, 2],
+                          cmap='PiYG'):
+    """
+    Exact same as plot_rgb_and_vector(), except plotting a single band instead.
+    
+    Parameters
+    ----------
+    raster: ndarray
+        The raster array which contains at least 3 stacked 2-d arrays.
+    raster_crs: dict
+        The crs of the incoming raster.
+    shapes: pandas geodataframe
+        A geodataframe to plot over the raster
     title: str
         A title for the plot.
     data_source_text: str
@@ -384,30 +485,30 @@ def plot_array_and_vector(raster,
     fig, ax: figure and axes objects
         The resulting fig and ax objects
     """
-    fig, ax = plt.subplots(figsize=(10, 10))
+    fig, ax = plt.subplots(figsize=(16, 9))
 
     # Get the extent of the plotted area
     extent = get_extent(raster_crs)
     
     # Plot the raster
-    if raster.ndim == 3:
-        es.plot_rgb(raster, rgb=[0, 1, 2], ax=ax, extent=extent)
-    elif raster.ndim == 2:
-        colorbar_handle = ax.imshow(raster, cmap=cmap, extent=extent)
+    if raster.ndim == 2:
+        colorbar_handle = ax.imshow(raster, cmap=cmap, extent=extent, vmax=vmax, vmin=vmin)
         
         # Add colorbar on the right-hand-side
         divider = make_axes_locatable(ax)
         cax = divider.append_axes("right", size="5%", pad=0.05)
         fig.colorbar(colorbar_handle, fraction=.05, cax=cax)
     else:
-        raise ValueError("Cannot plot raster with %d dimension." % raster.ndim)
-        
-    # Plot the avalanche shapes
-    plot_dataframe(ax, avalanche_shapes_object.geometry, plot_boundary=True)
+        raise ValueError("Cannot plot raster with %d dimension(s)." % raster.ndim)
+
+    if plot_paths:        
+        # Plot the avalanche shapes
+        plot_dataframe(ax, avalanche_shapes_object.geometry, plot_boundary=True)
     
-    # Plot the study area outline
-    polygon_geodataframe = study_area_gdf.to_crs(raster_crs)
-    plot_dataframe(ax, polygon_geodataframe, plot_boundary=True)
+    if plot_study_area:
+        # Plot the study area outline
+        polygon_geodataframe = study_area_gdf.to_crs(raster_crs)
+        plot_dataframe(ax, polygon_geodataframe, plot_boundary=True)
     
     # Add title and plot configuration
     ax.set_title(title, fontsize=30)            
@@ -417,7 +518,7 @@ def plot_array_and_vector(raster,
     
     # Save and plot fig
     if fname is not None:
-        plt.savefig(fname)
+        plt.savefig(os.path.join(image_dir, fname))
     plt.show()
 
     return fig, ax
@@ -446,7 +547,7 @@ def get_extent(crs):
     return extent
 
 
-def plot_dataframe(ax, polygon, opacity=1.0, plot_boundary=False):
+def plot_dataframe(ax, polygon, opacity=0.75, plot_boundary=False, color=None, cmap=None):
     """
     Given a file name and axes object, plot a shapefile.
     
@@ -462,9 +563,14 @@ def plot_dataframe(ax, polygon, opacity=1.0, plot_boundary=False):
         Indicates whether you would like to plot only the boundary or the entire polygon.
     """
     if plot_boundary:
-        polygon = polygon.boundary
-    polygon.plot(ax=ax, alpha=opacity)
-
+        polygon.boundary.plot(ax=ax, alpha=opacity, color='black')
+    if color is not None:
+        ax = polygon.plot(ax=ax, alpha=opacity, column=color, cmap=cmap, legend=False, vmax=.25, vmin=-.25)
+        fig = plt.gcf()
+        scatter = ax.collections[0]
+        divider = make_axes_locatable(ax)
+        cax = divider.append_axes("right", size="5%", pad=0.05)
+        fig.colorbar(scatter, fraction=.05, cax=cax)
 
 def generate_unioned_avalanche_overlay(crs, load_from_file_if_available=True):
     target_file = os.path.join(modified_vector_data, "union_dataset.geojson")
