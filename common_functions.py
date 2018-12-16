@@ -92,11 +92,11 @@ def rasterstats_grouped_by_height(shape, data, data_transform, statistic):
 
     """
     results = get_zonal_stats_dataframe(shape, data, data_transform, statistic)
+    
     results_avalanche = (results
                         .where(~(pd.isna(results['avalanche_id'])))
                         .groupby(["height_bucket"])[statistic]
                         .mean())
-                        
     results_no_avalanche = (results
                         .where(pd.isna(results['avalanche_id']))
                         .groupby(["height_bucket"])[statistic]
@@ -145,12 +145,16 @@ def get_zonal_stats_dataframe(shape, data, data_transform, statistic):
             [statistic]: The statistic over this shape
             size: The size of this shape
     """
+    shape = shape[shape['height_bucket'] != 0]
     results_geojson = rs.zonal_stats(shape,
                                      data,
                                      affine=data_transform,
-                                     stats=statistic)
+                                     stats=statistic,
+                                     all_touched=True,
+                                     nodata=False)
     shape[statistic] = [i[statistic] for i in results_geojson]
     return shape
+
 
 def get_height_bins(dem_path, data, data_transform, data_crs, statistic, input_mask, height_interval=100):
     """
@@ -186,7 +190,8 @@ def get_height_bins(dem_path, data, data_transform, data_crs, statistic, input_m
                                             data,
                                             affine=data_transform,
                                             geojson_out=True,
-                                            stats=statistic)
+                                            stats=statistic,
+                                            nodata=False)
     height_list = []
     statistic_list = []
     for height_bucket in data_in_height_buckets:
@@ -235,7 +240,17 @@ def dem_to_height_polygon_gdf(dem_path, input_mask, height_interval=100):
     return gpd_height_buckets
                 
 
-def plot_bar(df, x_name, x_label, y_name_list, y_label, title, source, series_names=None, ax=None, fname=None):
+def plot_bar(df, 
+             x_name, 
+             x_label, 
+             y_name_list, 
+             y_label, 
+             title, 
+             source, 
+             series_names=None, 
+             ax=None, 
+             fname=None, 
+             display_plot=True):
     """
     Create a bar chart from a dataframe.
     
@@ -285,11 +300,13 @@ def plot_bar(df, x_name, x_label, y_name_list, y_label, title, source, series_na
     # Save and plot fig
     if fname is not None:
         plt.savefig(os.path.join(image_dir, fname))
+    if display_plot is True:
+        plt.show()
     return ax
 
 
 def make_shapefile_inverse_within_box(within, shapes):
-    '''
+    """
     From a given shape/collection of shapes, create a shape that
     fills the negative space within a given bounding_box.
 
@@ -304,8 +321,9 @@ def make_shapefile_inverse_within_box(within, shapes):
     ----------
     inverse: pandas geodataframe
         The result of cookie-cutting within with shapes
-    '''
+    """
     inverse = gpd.overlay(within, shapes, how='symmetric_difference')
+    
     # For some reason the result is a crs-naive dataframe.  
     # Update it so it has the same crs as the input.
     inverse.crs = within.crs
@@ -329,8 +347,11 @@ def calculate_NDVI(data, red_idx=0, nir_idx=3):
     ----------
     [NDVI index]: float
     """
-    
-    return (data[nir_idx] - data[red_idx]) / (data[nir_idx] + data[red_idx])
+    nir = data[nir_idx]
+    red = data[red_idx]
+    nir[(nir + red) == 0] = np.nan
+    red[(nir + red) == 0] = np.nan
+    return (nir - red) / (nir + red)
 
 
 def add_data_source_text(ax, text):
@@ -365,6 +386,8 @@ def plot_rgb_and_vector(raster,
                         fname=None,
                         rgb_order=[0, 1, 2],
                         color=None,
+                        vmax=1,
+                        vmin=-1,
                         cmap=None,
                         display_plot=True):
     """
@@ -421,7 +444,7 @@ def plot_rgb_and_vector(raster,
             plot_boundary = False
         else:
             plot_boundary = True
-        plot_dataframe(ax, shapes, color=color, cmap=cmap, plot_boundary=plot_boundary)
+        plot_dataframe(ax, shapes, color=color, cmap=cmap, vmax=vmax, vmin=vmin, plot_boundary=plot_boundary)
     if plot_study_area:
         # Plot the study area outline
         polygon_geodataframe = study_area_gdf.to_crs(raster_crs)
@@ -450,10 +473,12 @@ def plot_array_and_vector(raster,
                           plot_paths=True,
                           plot_study_area=True,
                           fname=None,
+                          color=None,
+                          cmap_shapes=None,
                           vmax=1,
                           vmin=-1,
                           rgb_order=[0, 1, 2],
-                          cmap='PiYG'):
+                          cmap_array='PiYG'):
     """
     Exact same as plot_rgb_and_vector(), except plotting a single band instead.
     
@@ -492,7 +517,7 @@ def plot_array_and_vector(raster,
     
     # Plot the raster
     if raster.ndim == 2:
-        colorbar_handle = ax.imshow(raster, cmap=cmap, extent=extent, vmax=vmax, vmin=vmin)
+        colorbar_handle = ax.imshow(raster, cmap=cmap_array, extent=extent, vmax=vmax, vmin=vmin)
         
         # Add colorbar on the right-hand-side
         divider = make_axes_locatable(ax)
@@ -503,8 +528,12 @@ def plot_array_and_vector(raster,
 
     if plot_paths:        
         # Plot the avalanche shapes
-        plot_dataframe(ax, avalanche_shapes_object.geometry, plot_boundary=True)
-    
+        shapes = shapes.to_crs(raster_crs)
+        if color is not None:
+            plot_boundary = False
+        else:
+            plot_boundary = True
+        plot_dataframe(ax, shapes, color=color, cmap=cmap_shapes, plot_boundary=plot_boundary)
     if plot_study_area:
         # Plot the study area outline
         polygon_geodataframe = study_area_gdf.to_crs(raster_crs)
@@ -547,7 +576,7 @@ def get_extent(crs):
     return extent
 
 
-def plot_dataframe(ax, polygon, opacity=0.75, plot_boundary=False, color=None, cmap=None):
+def plot_dataframe(ax, polygon, opacity=0.75, plot_boundary=False, color=None, cmap=None, vmax=None, vmin=None):
     """
     Given a file name and axes object, plot a shapefile.
     
@@ -565,7 +594,7 @@ def plot_dataframe(ax, polygon, opacity=0.75, plot_boundary=False, color=None, c
     if plot_boundary:
         polygon.boundary.plot(ax=ax, alpha=opacity, color='black')
     if color is not None:
-        ax = polygon.plot(ax=ax, alpha=opacity, column=color, cmap=cmap, legend=False, vmax=.25, vmin=-.25)
+        ax = polygon.plot(ax=ax, alpha=opacity, column=color, cmap=cmap, legend=False, vmax=vmax, vmin=vmin)
         fig = plt.gcf()
         scatter = ax.collections[0]
         divider = make_axes_locatable(ax)
@@ -573,6 +602,22 @@ def plot_dataframe(ax, polygon, opacity=0.75, plot_boundary=False, color=None, c
         fig.colorbar(scatter, fraction=.05, cax=cax)
 
 def generate_unioned_avalanche_overlay(crs, load_from_file_if_available=True):
+    """
+    Either load the given avalanche union geojson file or create a new overlay from between the height_polygon_gdf and 
+    avalanche_shapes.  This is VERY slow if the overlay is calculated (hence why caching this in a file is a good idea)
+
+    Parameters
+    ----------
+    crs: crs object
+        The CRS of the desired output.  Ignored if loading from file (uses the file's CRS)
+    load_from_file_if_available: bool
+        If this is False, re-create the overlay whether or not there is a geojson representation already on disk.
+
+    Returns
+    ----------
+    avalanche_overlay_shape: pandas geodataframe
+        The union of the avalanche shapefile and the binned-elevation shapefile.
+    """
     target_file = os.path.join(modified_vector_data, "union_dataset.geojson")
     if load_from_file_if_available and os.path.isfile(target_file):
         avalanche_overlay_shape = gpd.read_file(target_file)
