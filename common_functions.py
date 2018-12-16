@@ -226,7 +226,7 @@ def dem_to_height_polygon_gdf(dem_path, input_mask, height_interval=100):
     masked_band = np.squeeze(masked_band)
     
     # Make polygon that is defined by heights that are in the specified intervals
-    height_buckets = (np.round(masked_band / height_interval) * height_interval).astype(np.int)
+    height_buckets = (np.round(masked_band / height_interval) * height_interval).astype(int16)
     attribute_name = 'height_bucket'
     height_buckets_geometry = (
         {'properties': {attribute_name: v}, 'geometry': s}
