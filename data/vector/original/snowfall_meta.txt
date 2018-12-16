@@ -1,0 +1,3 @@
+This data was collected from the Utah Avalanche Center and represents snowfall, in inches, in the months of November to April at Alta Guard.  From the website:
+"Below is a chart and a table that contains historical snowfall data by month as recorded at the Alta Guard station which is now part of the UDOT avalanche snow safety operation.  This historical data was first compiled by Montgomery Atwater who was the first snow ranger in Little Cottonwood Canyon."
+See here for more information: https://utahavalanchecenter.org/alta-monthly-snowfall
