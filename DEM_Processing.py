@@ -37,7 +37,7 @@ import earthpy as et
 import earthpy.spatial as es
 import earthpy.clip as cl
 
-import common_functions_2 as common
+import common_functions as common
 
 # Set project constants
 ftp_data_source = 'ftp.agrc.utah.gov'
